@@ -3,6 +3,7 @@ package ast
 type NodeType string
 
 const (
+	Root   NodeType = "root"
 	Amount NodeType = "amount"
 	Unit   NodeType = "unit"
 )
