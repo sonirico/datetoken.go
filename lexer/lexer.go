@@ -32,7 +32,7 @@ func (l *Lexer) readChar() {
 		l.currentChar = 0
 	}
 	l.currentPointer = l.nextPointer
-	l.nextPointer += 1
+	l.nextPointer++
 }
 
 func (l *Lexer) peekChar() byte {
