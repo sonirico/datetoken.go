@@ -18,7 +18,7 @@ type Parser struct {
 	peekToken token.Token
 }
 
-func NewParser(lexer *lexer.Lexer) *Parser {
+func New(lexer *lexer.Lexer) *Parser {
 	parser := &Parser{
 		lexer:  lexer,
 		errors: []string{},

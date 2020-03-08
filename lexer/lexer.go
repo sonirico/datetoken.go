@@ -1,8 +1,9 @@
 package lexer
 
 import (
-	"github.com/sonirico/datetoken.go/token"
 	"strings"
+
+	"github.com/sonirico/datetoken.go/token"
 )
 
 type Lexer struct {
@@ -13,7 +14,7 @@ type Lexer struct {
 	nextPointer    int64
 }
 
-func NewLexer(payload string) *Lexer {
+func New(payload string) *Lexer {
 	cleanPayload := strings.TrimSpace(payload)
 	lexer := &Lexer{
 		payload:        cleanPayload,

@@ -15,7 +15,7 @@ type expectedResult struct {
 func testToken(t *testing.T, payload string, expected []expectedResult) {
 	t.Helper()
 
-	lexer := NewLexer(payload)
+	lexer := New(payload)
 
 	for _, expectedToken := range expected {
 		actualToken := lexer.NextToken()

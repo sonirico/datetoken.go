@@ -8,8 +8,8 @@ import (
 )
 
 func newParser(t *testing.T, payload string) *ast.RootNode {
-	lexer := lexer.NewLexer(payload)
-	parser := NewParser(lexer)
+	lexer := lexer.New(payload)
+	parser := New(lexer)
 	root := parser.Parse()
 	if len(parser.Errors()) > 0 {
 		t.Errorf("parser had %d errors", len(parser.Errors()))
