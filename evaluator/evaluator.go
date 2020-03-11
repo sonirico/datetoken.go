@@ -76,19 +76,52 @@ func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 
 func (e *evaluator) evalStartSnap(node *ast.SnapNode) {
 	var newTmp time.Time
-	switch node.Literal() {
+	switch node.Unit {
 	case "s":
 		newTmp = e.beginningOfSecond()
 	case "m":
 		newTmp = e.beginningOfMinute()
+	case "h":
+		newTmp = e.beginningOfHour()
+	case "d":
+		newTmp = e.beginningOfDay()
+	case "w":
+		newTmp = e.beginningOfWeek()
+	case "M":
+		newTmp = e.beginningOfMonth()
+	case "Y":
+		newTmp = e.beginningOfYear()
+	}
+	e.tmp = &newTmp
+}
+
+func (e *evaluator) evalEndSnap(node *ast.SnapNode) {
+	var newTmp time.Time
+	switch node.Unit {
+	case "s":
+		newTmp = *e.initial
+	case "m":
+		newTmp = e.endOfMinute()
+	case "h":
+		newTmp = e.endOfHour()
+	case "d":
+		newTmp = e.endOfDay()
+	case "w":
+		newTmp = e.endOfWeek()
+	case "M":
+		newTmp = e.endOfMonth()
+	case "Y":
+		newTmp = e.endOfYear()
 	}
 	e.tmp = &newTmp
 }
 
 func (e *evaluator) evalSnapNode(node *ast.SnapNode) {
 	switch node.Token.Type {
-	case token.Start:
+	case token.SnapStart:
 		e.evalStartSnap(node)
+	case token.SnapEnd:
+		e.evalEndSnap(node)
 	}
 }
 

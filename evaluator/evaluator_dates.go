@@ -14,19 +14,19 @@ func (e *evaluator) beginningOfMinute() time.Time {
 }
 
 // BeginningOfHour beginning of hour
-func (e *evaluator) BeginningOfHour() time.Time {
-	y, m, d := e.Date()
-	return time.Date(y, m, d, e.Time.Hour(), 0, 0, 0, e.Time.Location())
+func (e *evaluator) beginningOfHour() time.Time {
+	y, m, d := e.tmp.Date()
+	return time.Date(y, m, d, e.tmp.Hour(), 0, 0, 0, e.tmp.Location())
 }
 
 // BeginningOfDay beginning of day
-func (e *evaluator) BeginningOfDay() time.Time {
-	y, m, d := e.Date()
-	return time.Date(y, m, d, 0, 0, 0, 0, e.Time.Location())
+func (e *evaluator) beginningOfDay() time.Time {
+	y, m, d := e.tmp.Date()
+	return time.Date(y, m, d, 0, 0, 0, 0, e.tmp.Location())
 }
 
 // BeginningOfWeek beginning of week
-func (e *evaluator) BeginningOfWeek() time.Time {
+func (e *evaluator) beginningOfWeek() time.Time {
 	// t := e.BeginningOfDay()
 	// weekday := int(t.Weekday())
 
@@ -44,75 +44,75 @@ func (e *evaluator) BeginningOfWeek() time.Time {
 }
 
 // BeginningOfMonth beginning of month
-func (e *evaluator) BeginningOfMonth() time.Time {
-	y, m, _ := e.Date()
+func (e *evaluator) beginningOfMonth() time.Time {
+	y, m, _ := e.tmp.Date()
 	return time.Date(y, m, 1, 0, 0, 0, 0, e.Location())
 }
 
 // BeginningOfQuarter beginning of quarter
-func (e *evaluator) BeginningOfQuarter() time.Time {
-	month := e.BeginningOfMonth()
+func (e *evaluator) beginningOfQuarter() time.Time {
+	month := e.beginningOfMonth()
 	offset := (int(month.Month()) - 1) % 3
 	return month.AddDate(0, -offset, 0)
 }
 
 // BeginningOfHalf beginning of half year
-func (e *evaluator) BeginningOfHalf() time.Time {
-	month := e.BeginningOfMonth()
+func (e *evaluator) beginningOfHalf() time.Time {
+	month := e.beginningOfMonth()
 	offset := (int(month.Month()) - 1) % 6
 	return month.AddDate(0, -offset, 0)
 }
 
 // BeginningOfYear BeginningOfYear beginning of year
-func (e *evaluator) BeginningOfYear() time.Time {
-	y, _, _ := e.Date()
+func (e *evaluator) beginningOfYear() time.Time {
+	y, _, _ := e.tmp.Date()
 	return time.Date(y, time.January, 1, 0, 0, 0, 0, e.Location())
 }
 
 // EndOfMinute end of minute
-func (e *evaluator) EndOfMinute() time.Time {
+func (e *evaluator) endOfMinute() time.Time {
 	return e.beginningOfMinute().Add(time.Minute - time.Nanosecond)
 }
 
 // EndOfHour end of hour
-func (e *evaluator) EndOfHour() time.Time {
-	return e.BeginningOfHour().Add(time.Hour - time.Nanosecond)
+func (e *evaluator) endOfHour() time.Time {
+	return e.beginningOfHour().Add(time.Hour - time.Nanosecond)
 }
 
 // EndOfDay end of day
-func (e *evaluator) EndOfDay() time.Time {
-	y, m, d := e.Date()
+func (e *evaluator) endOfDay() time.Time {
+	y, m, d := e.tmp.Date()
 	return time.Date(y, m, d, 23, 59, 59, int(time.Second-time.Nanosecond), e.Location())
 }
 
 // EndOfWeek end of week
-func (e *evaluator) EndOfWeek() time.Time {
-	return e.BeginningOfWeek().AddDate(0, 0, 7).Add(-time.Nanosecond)
+func (e *evaluator) endOfWeek() time.Time {
+	return e.beginningOfWeek().AddDate(0, 0, 7).Add(-time.Nanosecond)
 }
 
 // EndOfMonth end of month
-func (e *evaluator) EndOfMonth() time.Time {
-	return e.BeginningOfMonth().AddDate(0, 1, 0).Add(-time.Nanosecond)
+func (e *evaluator) endOfMonth() time.Time {
+	return e.beginningOfMonth().AddDate(0, 1, 0).Add(-time.Nanosecond)
 }
 
 // EndOfQuarter end of quarter
-func (e *evaluator) EndOfQuarter() time.Time {
-	return e.BeginningOfQuarter().AddDate(0, 3, 0).Add(-time.Nanosecond)
+func (e *evaluator) endOfQuarter() time.Time {
+	return e.beginningOfQuarter().AddDate(0, 3, 0).Add(-time.Nanosecond)
 }
 
 // EndOfHalf end of half year
-func (e *evaluator) EndOfHalf() time.Time {
-	return e.BeginningOfHalf().AddDate(0, 6, 0).Add(-time.Nanosecond)
+func (e *evaluator) endOfHalf() time.Time {
+	return e.beginningOfHalf().AddDate(0, 6, 0).Add(-time.Nanosecond)
 }
 
 // EndOfYear end of year
-func (e *evaluator) EndOfYear() time.Time {
-	return e.BeginningOfYear().AddDate(1, 0, 0).Add(-time.Nanosecond)
+func (e *evaluator) endOfYear() time.Time {
+	return e.beginningOfYear().AddDate(1, 0, 0).Add(-time.Nanosecond)
 }
 
 // Monday monday
 func (e *evaluator) Monday() time.Time {
-	t := e.BeginningOfDay()
+	t := e.beginningOfDay()
 	weekday := int(t.Weekday())
 	if weekday == 0 {
 		weekday = 7
@@ -122,12 +122,12 @@ func (e *evaluator) Monday() time.Time {
 
 // Sunday sunday
 func (e *evaluator) Sunday() time.Time {
-	t := e.BeginningOfDay()
+	t := e.beginningOfDay()
 	weekday := int(t.Weekday())
 	if weekday == 0 {
 		return t
 	}
-	return t.AddDate(0, 0, (7 - weekday))
+	return t.AddDate(0, 0, 7-weekday)
 }
 
 // TODO!! EndOfSunday end of sunday
