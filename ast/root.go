@@ -14,7 +14,7 @@ func NewRootNode() *RootNode {
 	}
 }
 
-func (rm *RootNode) Type() NodeType {
+func (rn *RootNode) Type() NodeType {
 	return Root
 }
 

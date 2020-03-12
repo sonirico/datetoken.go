@@ -23,8 +23,8 @@ type evaluator struct {
 
 	config *evalConfig
 
-	initial *time.Time
-	tmp     *time.Time
+	current time.Time
+	timeSet bool
 
 	arithmeticRegistry map[Unit]evalArithmeticFunc
 	snapRegistry       map[Snap]evalSnapFunc
@@ -32,11 +32,10 @@ type evaluator struct {
 
 func newEvaluator() *evaluator {
 	evaluator := &evaluator{
-		initial: nil,
-		tmp:     nil,
 		config: &evalConfig{
 			WeekStartDay: time.Sunday,
 		},
+		timeSet:            false,
 		arithmeticRegistry: make(map[Unit]evalArithmeticFunc),
 		snapRegistry:       make(map[Snap]evalSnapFunc),
 	}
@@ -53,13 +52,10 @@ func (e *evaluator) registerArithmeticFunc(unit Unit, fn evalArithmeticFunc) {
 
 // Override initial node value
 func (e *evaluator) setInitial(date time.Time) {
-	if e.initial != nil {
+	if e.timeSet {
 		return
 	}
-	e.initial = &date
-	if e.tmp == nil {
-		e.tmp = &date
-	}
+	e.current = date
 }
 
 func (e *evaluator) evalValueNode(node *ast.ValueNode) {
@@ -75,45 +71,37 @@ func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 }
 
 func (e *evaluator) evalStartSnap(node *ast.SnapNode) {
-	var newTmp time.Time
 	switch node.Unit {
-	case "s":
-		newTmp = e.beginningOfSecond()
 	case "m":
-		newTmp = e.beginningOfMinute()
+		e.snapStartOfMinute()
 	case "h":
-		newTmp = e.beginningOfHour()
+		e.snapStartOfHour()
 	case "d":
-		newTmp = e.beginningOfDay()
+		e.snapStartOfDay()
 	case "w":
-		newTmp = e.beginningOfWeek()
+		e.snapStartOfWeek()
 	case "M":
-		newTmp = e.beginningOfMonth()
+		e.snapStartOfMonth()
 	case "Y":
-		newTmp = e.beginningOfYear()
+		e.snapStartOfYear()
 	}
-	e.tmp = &newTmp
 }
 
 func (e *evaluator) evalEndSnap(node *ast.SnapNode) {
-	var newTmp time.Time
 	switch node.Unit {
-	case "s":
-		newTmp = *e.initial
 	case "m":
-		newTmp = e.endOfMinute()
+		e.snapEndOfMinute()
 	case "h":
-		newTmp = e.endOfHour()
+		e.snapEndOfHour()
 	case "d":
-		newTmp = e.endOfDay()
+		e.snapEndOfDay()
 	case "w":
-		newTmp = e.endOfWeek()
+		e.snapEndOfWeek()
 	case "M":
-		newTmp = e.endOfMonth()
+		e.snapEndOfMonth()
 	case "Y":
-		newTmp = e.endOfYear()
+		e.snapEndOfYear()
 	}
-	e.tmp = &newTmp
 }
 
 func (e *evaluator) evalSnapNode(node *ast.SnapNode) {
@@ -136,8 +124,8 @@ func (e *evaluator) evalNode(node ast.Node) {
 	}
 }
 
-func (e *evaluator) Eval(datetoken string) (time.Time, error) {
-	lexer := lexer.New(datetoken)
+func (e *evaluator) Eval(payload string) (time.Time, error) {
+	lexer := lexer.New(payload)
 	parser := parser.New(lexer)
 	astRoot := parser.Parse()
 	if len(parser.Errors()) > 1 {
@@ -146,7 +134,7 @@ func (e *evaluator) Eval(datetoken string) (time.Time, error) {
 	for _, node := range astRoot.Nodes {
 		e.evalNode(node)
 	}
-	return *e.tmp, nil
+	return e.current, nil
 }
 
 func Eval(payload string) (time.Time, error) {
