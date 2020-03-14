@@ -67,7 +67,27 @@ func (e *evaluator) evalValueNode(node *ast.ValueNode) {
 }
 
 func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
+	amount := int(node.Amount)
+	if token.Minus == node.Sign {
+		amount = -amount
+	}
 
+	switch node.Unit {
+	case "s":
+		e.addSeconds(amount)
+	case "m":
+		e.addMinutes(amount)
+	case "h":
+		e.addHours(amount)
+	case "d":
+		e.addDays(amount)
+	case "w":
+		e.addWeeks(amount)
+	case "M":
+		e.addMonths(amount)
+	case "Y":
+		e.addYears(amount)
+	}
 }
 
 func (e *evaluator) evalStartSnap(node *ast.SnapNode) {

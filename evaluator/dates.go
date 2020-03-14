@@ -109,3 +109,32 @@ func PreviousSunday(date time.Time) time.Time {
 func EndOfSunday(date time.Time) time.Time {
 	return EndOfDay(PreviousSunday(date))
 }
+
+func AddSeconds(date time.Time, amount int) time.Time {
+	return date.Add(time.Duration(amount) * time.Second)
+}
+
+func AddMinutes(date time.Time, amount int) time.Time {
+	return date.Add(time.Duration(amount) * time.Minute)
+}
+
+func AddHours(date time.Time, amount int) time.Time {
+	return date.Add(time.Duration(amount) * time.Hour)
+}
+
+func AddDays(date time.Time, amount int) time.Time {
+	return date.Add(time.Duration(amount) * 24 * time.Hour)
+}
+
+func AddWeeks(date time.Time, amount int) time.Time {
+	return date.Add(time.Duration(amount) * 24 * 7 * time.Hour)
+}
+
+func AddMonths(date time.Time, amount int) time.Time {
+	return date.AddDate(0, amount, 0)
+}
+
+func AddYears(date time.Time, amount int) time.Time {
+	return date.AddDate(amount, 0, 0)
+}
+

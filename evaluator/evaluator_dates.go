@@ -63,3 +63,31 @@ func (e *evaluator) snapEndOfMonth() {
 func (e *evaluator) snapEndOfYear() {
 	e.current = EndOfYear(e.current)
 }
+
+func (e *evaluator) addSeconds(amount int) {
+	e.current = AddSeconds(e.current, amount)
+}
+
+func (e *evaluator) addMinutes(amount int) {
+	e.current = AddMinutes(e.current, amount)
+}
+
+func (e *evaluator) addHours(amount int) {
+	e.current = AddHours(e.current, amount)
+}
+
+func (e *evaluator) addDays(amount int) {
+	e.current = AddDays(e.current, amount)
+}
+
+func (e *evaluator) addWeeks(amount int) {
+	e.current = AddWeeks(e.current, amount)
+}
+
+func (e *evaluator) addMonths(amount int) {
+	e.current = AddMonths(e.current, amount)
+}
+
+func (e *evaluator) addYears(amount int) {
+	e.current = AddYears(e.current, amount)
+}
