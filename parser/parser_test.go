@@ -100,6 +100,16 @@ func TestParser_SnapEnd(t *testing.T) {
 	testSnapNode(t, root.Nodes[1], "@", "d")
 }
 
+func TestParser_SnapEnd_Weekday(t *testing.T) {
+	payload := "now@thu"
+	root := newParser(t, payload)
+	if len(root.Nodes) < 2 {
+		t.Fatalf("empty node set. expected some")
+	}
+	testValNode(t, root.Nodes[0], "now")
+	testSnapNode(t, root.Nodes[1], "@", "thu")
+}
+
 func TestParser_ArithmeticPlus(t *testing.T) {
 	payload := "now+01d"
 	root := newParser(t, payload)
