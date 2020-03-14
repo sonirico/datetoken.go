@@ -91,3 +91,59 @@ func (e *evaluator) addMonths(amount int) {
 func (e *evaluator) addYears(amount int) {
 	e.current = AddYears(e.current, amount)
 }
+
+func (e *evaluator) previousMonday() {
+	e.current = PreviousMonday(e.current)
+}
+
+func (e *evaluator) previousTuesday() {
+	e.current = PreviousTuesday(e.current)
+}
+
+func (e *evaluator) previousWednesday() {
+	e.current = PreviousWednesday(e.current)
+}
+
+func (e *evaluator) previousThursday() {
+	e.current = PreviousThursday(e.current)
+}
+
+func (e *evaluator) previousFriday() {
+	e.current = PreviousFriday(e.current)
+}
+
+func (e *evaluator) previousSaturday() {
+	e.current = PreviousSaturday(e.current)
+}
+
+func (e *evaluator) previousSunday() {
+	e.current = PreviousSunday(e.current)
+}
+
+func (e *evaluator) nextMonday() {
+	e.current = NextMonday(e.current)
+}
+
+func (e *evaluator) nextTuesday() {
+	e.current = NextTuesday(e.current)
+}
+
+func (e *evaluator) nextWednesday() {
+	e.current = NextWednesday(e.current)
+}
+
+func (e *evaluator) nextThursday() {
+	e.current = NextThursday(e.current)
+}
+
+func (e *evaluator) nextFriday() {
+	e.current = NextFriday(e.current)
+}
+
+func (e *evaluator) nextSaturday() {
+	e.current = NextSaturday(e.current)
+}
+
+func (e *evaluator) nextSunday() {
+	e.current = NextSunday(e.current)
+}

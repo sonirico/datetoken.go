@@ -344,3 +344,50 @@ func TestEvaluator_AddYears(t *testing.T) {
 		}
 	}
 }
+
+// Week days
+func TestEvaluator_PreviousWeekday(t *testing.T) {
+	tests := []struct {
+		Token    string
+		Initial  string
+		Expected string
+	}{
+		{"now/mon", "2020-03-11 00:00:00", "2020-03-09 00:00:00"},
+		{"now/tue", "2020-03-11 00:00:00", "2020-03-10 00:00:00"},
+		{"now/wed", "2020-03-11 00:00:00", "2020-03-11 00:00:00"},
+		{"now/thu", "2020-03-11 00:00:00", "2020-03-05 00:00:00"},
+		{"now/fri", "2020-03-11 00:00:00", "2020-03-06 00:00:00"},
+		{"now/sat", "2020-03-11 00:00:00", "2020-03-07 00:00:00"},
+		{"now/sun", "2020-03-11 00:00:00", "2020-03-08 00:00:00"},
+	}
+
+	for _, test := range tests {
+		actual := testEval(t, test.Token, test.Initial)
+		if !assertTime(t, actual, test.Expected) {
+			t.FailNow()
+		}
+	}
+}
+
+func TestEvaluator_NextWeekday(t *testing.T) {
+	tests := []struct {
+		Token    string
+		Initial  string
+		Expected string
+	}{
+		{"now@mon", "2020-03-11 00:00:00", "2020-03-16 00:00:00"},
+		{"now@tue", "2020-03-11 00:00:00", "2020-03-17 00:00:00"},
+		{"now@wed", "2020-03-11 00:00:00", "2020-03-11 00:00:00"},
+		{"now@thu", "2020-03-11 00:00:00", "2020-03-12 00:00:00"},
+		{"now@fri", "2020-03-11 00:00:00", "2020-03-13 00:00:00"},
+		{"now@sat", "2020-03-11 00:00:00", "2020-03-14 00:00:00"},
+		{"now@sun", "2020-03-11 00:00:00", "2020-03-15 00:00:00"},
+	}
+
+	for _, test := range tests {
+		actual := testEval(t, test.Token, test.Initial)
+		if !assertTime(t, actual, test.Expected) {
+			t.FailNow()
+		}
+	}
+}

@@ -83,8 +83,8 @@ func (p *Parser) parseSnapNode() *ast.SnapNode {
 		Operator: p.curToken.Literal,
 	}
 	p.nextToken()
-	if !p.curTokenIs(token.Unit) {
-		p.addError(fmt.Sprintf("expected token to be Unit, got '%s' instead", p.curToken.Type))
+	if !(p.curTokenIs(token.Unit) || p.curTokenIs(token.Wd)) {
+		p.addError(fmt.Sprintf("expected token to be Unit or Wd, got '%s' instead", p.curToken.Type))
 		return nil
 	}
 	node.Unit = p.curToken.Literal

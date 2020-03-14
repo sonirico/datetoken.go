@@ -85,17 +85,20 @@ func (l *Lexer) NextToken() token.Token {
 			number := l.readNumber()
 			tok = newToken(token.Number, number)
 			return tok
-		} else {
-			schar := string(l.currentChar)
-			tok = newToken(token.LookupKeyword(schar), schar)
 		}
+		if isLetter(l.currentChar) {
+			schar := l.readWord()
+			tok = newToken(token.LookupKeyword(schar), schar)
+			return tok
+		}
+		tok = newToken(token.Illegal, string(l.currentChar))
 	}
 	l.readChar()
 	return tok
 }
 
 func isLetter(char byte) bool {
-	return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || char == '_'
+	return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
 }
 
 func isDigit(char byte) bool {

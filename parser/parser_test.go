@@ -22,6 +22,7 @@ func newParser(t *testing.T, payload string) *ast.RootNode {
 }
 
 func testValNode(t *testing.T, node ast.Node, expectedLiteral string) bool {
+	t.Helper()
 	valnode, ok := node.(*ast.ValueNode)
 	if !ok {
 		t.Fatalf("unexpected node type. want ValueNode, have %v(%T)",
@@ -37,6 +38,7 @@ func testValNode(t *testing.T, node ast.Node, expectedLiteral string) bool {
 }
 
 func testArithmeticNode(t *testing.T, node ast.Node, amount int64, unit, sign string) bool {
+	t.Helper()
 	arnode, ok := node.(*ast.ArithmeticNode)
 	if !ok {
 		t.Fatalf("unexpected node type. want ArithmeticNode, have %v(%T)",
@@ -61,6 +63,8 @@ func testArithmeticNode(t *testing.T, node ast.Node, amount int64, unit, sign st
 }
 
 func testSnapNode(t *testing.T, node ast.Node, op, unit string) bool {
+	t.Helper()
+
 	snapnode, ok := node.(*ast.SnapNode)
 	if !ok {
 		t.Fatalf("unexpected node type. want SnapNode, have %v(%T)",
@@ -73,7 +77,7 @@ func testSnapNode(t *testing.T, node ast.Node, op, unit string) bool {
 		return false
 	}
 	if snapnode.Unit != unit {
-		t.Fatalf("snapnode. unexpected unit. want %s, have %s",
+		t.Fatalf("snapnode. unexpected unit or weekday. want %s, have %s",
 			unit, snapnode.Unit)
 		return false
 	}
@@ -88,6 +92,16 @@ func TestParser_SnapStart(t *testing.T) {
 	}
 	testValNode(t, root.Nodes[0], "now")
 	testSnapNode(t, root.Nodes[1], "/", "d")
+}
+
+func TestParser_SnapStart_Weekday(t *testing.T) {
+	payload := "now/thu"
+	root := newParser(t, payload)
+	if len(root.Nodes) < 2 {
+		t.Fatalf("empty node set. expected some")
+	}
+	testValNode(t, root.Nodes[0], "now")
+	testSnapNode(t, root.Nodes[1], "/", "thu")
 }
 
 func TestParser_SnapEnd(t *testing.T) {

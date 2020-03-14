@@ -29,7 +29,7 @@ func testToken(t *testing.T, payload string, expected []expectedResult) {
 	}
 
 }
-func TestLexerWithNow(t *testing.T) {
+func TestLexer_WithNow(t *testing.T) {
 	input := `
 		now-s+2m_-3h+234d-w+M-Y/M@w
 	`
@@ -63,7 +63,7 @@ func TestLexerWithNow(t *testing.T) {
 	testToken(t, input, expected)
 }
 
-func TestLexerWithoutNow(t *testing.T) {
+func TestLexer_WithoutNow(t *testing.T) {
 	input := `
 		-s+2m_-3h+234d-w+M-Y/M@w
 	`
@@ -90,6 +90,30 @@ func TestLexerWithoutNow(t *testing.T) {
 		{token.Unit, "M"},
 		{token.SnapEnd, "@"},
 		{token.Unit, "w"},
+		{token.End, ""},
+	}
+
+	testToken(t, input, expected)
+}
+
+func TestLexer_PreviousWeekdays(t *testing.T) {
+	input := "now/mon/tue/wed/thu/fri/sat/sun"
+	expected := []expectedResult{
+		{token.Start, "now"},
+		{token.SnapStart, "/"},
+		{token.Wd, "mon"},
+		{token.SnapStart, "/"},
+		{token.Wd, "tue"},
+		{token.SnapStart, "/"},
+		{token.Wd, "wed"},
+		{token.SnapStart, "/"},
+		{token.Wd, "thu"},
+		{token.SnapStart, "/"},
+		{token.Wd, "fri"},
+		{token.SnapStart, "/"},
+		{token.Wd, "sat"},
+		{token.SnapStart, "/"},
+		{token.Wd, "sun"},
 		{token.End, ""},
 	}
 

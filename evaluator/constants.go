@@ -1,26 +1,36 @@
 package evaluator
 
-type Value string
-
-type Unit string
-
-type Snap string
+import "time"
 
 const (
-	Second Unit = "s"
-	Minute Unit = "m"
-	Hour   Unit = "h"
-	Day    Unit = "d"
-	Week   Unit = "w"
-	Month  Unit = "M"
-	Year   Unit = "Y"
+	Second string = "s"
+	Minute        = "m"
+	Hour          = "h"
+	Day           = "d"
+	Week          = "w"
+	Month         = "M"
+	Year          = "Y"
+
+	Monday    = "mon"
+	Tuesday   = "tue"
+	Wednesday = "wed"
+	Thursday  = "thu"
+	Friday    = "fri"
+	Saturday  = "sat"
+	Sunday    = "sun"
 )
 
 const (
-	Start Snap = "/"
-	End   Snap = "@"
+	Start string = "/"
+	End   string = "@"
 )
 
 const (
 	Now = "now"
 )
+
+type valueResolver map[string]func(string) time.Time
+
+func (vr valueResolver) register(token string, fn func(string) time.Time) {
+	vr[token] = fn
+}

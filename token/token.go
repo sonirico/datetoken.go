@@ -12,20 +12,28 @@ const (
 	Number              = "num"
 	Unit                = "unit"
 	Illegal             = "ill"
+	Wd                  = "wd"
 )
 
 var keywords = map[string]TokenType{
-	"+": Plus,
-	"-": Minus,
-	"/": SnapStart,
-	"@": SnapEnd,
-	"s": Unit,
-	"m": Unit,
-	"h": Unit,
-	"d": Unit,
-	"w": Unit,
-	"M": Unit,
-	"Y": Unit,
+	"+":   Plus,
+	"-":   Minus,
+	"/":   SnapStart,
+	"@":   SnapEnd,
+	"s":   Unit,
+	"m":   Unit,
+	"h":   Unit,
+	"d":   Unit,
+	"w":   Unit,
+	"M":   Unit,
+	"Y":   Unit,
+	"mon": Wd,
+	"tue": Wd,
+	"wed": Wd,
+	"thu": Wd,
+	"fri": Wd,
+	"sat": Wd,
+	"sun": Wd,
 }
 
 func LookupKeyword(key string) TokenType {

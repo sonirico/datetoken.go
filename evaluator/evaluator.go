@@ -10,9 +10,6 @@ import (
 	"github.com/sonirico/datetoken.go/token"
 )
 
-type evalArithmeticFunc func(Unit) time.Time
-type evalSnapFunc func(Snap) time.Time
-
 type evalConfig struct {
 	WeekStartDay time.Weekday
 	TimeLocation *time.Location
@@ -25,9 +22,6 @@ type evaluator struct {
 
 	current time.Time
 	timeSet bool
-
-	arithmeticRegistry map[Unit]evalArithmeticFunc
-	snapRegistry       map[Snap]evalSnapFunc
 }
 
 func newEvaluator() *evaluator {
@@ -35,19 +29,9 @@ func newEvaluator() *evaluator {
 		config: &evalConfig{
 			WeekStartDay: time.Sunday,
 		},
-		timeSet:            false,
-		arithmeticRegistry: make(map[Unit]evalArithmeticFunc),
-		snapRegistry:       make(map[Snap]evalSnapFunc),
+		timeSet: false,
 	}
 	return evaluator
-}
-
-func (e *evaluator) registerSnapFunc(snap Snap, fn evalSnapFunc) {
-	e.snapRegistry[snap] = fn
-}
-
-func (e *evaluator) registerArithmeticFunc(unit Unit, fn evalArithmeticFunc) {
-	e.arithmeticRegistry[unit] = fn
 }
 
 // Override initial node value
@@ -56,6 +40,7 @@ func (e *evaluator) setInitial(date time.Time) {
 		return
 	}
 	e.current = date
+	e.timeSet = true
 }
 
 func (e *evaluator) evalValueNode(node *ast.ValueNode) {
@@ -73,55 +58,88 @@ func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 	}
 
 	switch node.Unit {
-	case "s":
+	case Second:
 		e.addSeconds(amount)
-	case "m":
+	case Minute:
 		e.addMinutes(amount)
-	case "h":
+	case Hour:
 		e.addHours(amount)
-	case "d":
+	case Day:
 		e.addDays(amount)
-	case "w":
+	case Week:
 		e.addWeeks(amount)
-	case "M":
+	case Month:
 		e.addMonths(amount)
-	case "Y":
+	case Year:
 		e.addYears(amount)
 	}
 }
 
 func (e *evaluator) evalStartSnap(node *ast.SnapNode) {
 	switch node.Unit {
-	case "m":
+	// time units
+	case Minute:
 		e.snapStartOfMinute()
-	case "h":
+	case Hour:
 		e.snapStartOfHour()
-	case "d":
+	case Day:
 		e.snapStartOfDay()
-	case "w":
+	case Week:
 		e.snapStartOfWeek()
-	case "M":
+	case Month:
 		e.snapStartOfMonth()
-	case "Y":
+	case Year:
 		e.snapStartOfYear()
+	// weekdays
+	case Monday:
+		e.previousMonday()
+	case Tuesday:
+		e.previousTuesday()
+	case Wednesday:
+		e.previousWednesday()
+	case Thursday:
+		e.previousThursday()
+	case Friday:
+		e.previousFriday()
+	case Saturday:
+		e.previousSaturday()
+	case Sunday:
+		e.previousSunday()
 	}
 }
 
 func (e *evaluator) evalEndSnap(node *ast.SnapNode) {
 	switch node.Unit {
-	case "m":
+	// time unit
+	case Minute:
 		e.snapEndOfMinute()
-	case "h":
+	case Hour:
 		e.snapEndOfHour()
-	case "d":
+	case Day:
 		e.snapEndOfDay()
-	case "w":
+	case Week:
 		e.snapEndOfWeek()
-	case "M":
+	case Month:
 		e.snapEndOfMonth()
-	case "Y":
+	case Year:
 		e.snapEndOfYear()
+	// weekdays
+	case Monday:
+		e.nextMonday()
+	case Tuesday:
+		e.nextTuesday()
+	case Wednesday:
+		e.nextWednesday()
+	case Thursday:
+		e.nextThursday()
+	case Friday:
+		e.nextFriday()
+	case Saturday:
+		e.nextSaturday()
+	case Sunday:
+		e.nextSunday()
 	}
+
 }
 
 func (e *evaluator) evalSnapNode(node *ast.SnapNode) {

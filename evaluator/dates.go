@@ -85,26 +85,6 @@ func EndOfYear(date time.Time) time.Time {
 	return BeginningOfYear(date).AddDate(1, 0, 0).Add(-time.Nanosecond)
 }
 
-// Monday monday
-func PreviousMonday(date time.Time) time.Time {
-	t := BeginningOfDay(date)
-	weekday := int(t.Weekday())
-	if weekday == 0 {
-		weekday = 7
-	}
-	return t.AddDate(0, 0, -weekday+1)
-}
-
-// Sunday sunday
-func PreviousSunday(date time.Time) time.Time {
-	t := BeginningOfDay(date)
-	weekday := int(t.Weekday())
-	if weekday == 0 {
-		return t
-	}
-	return t.AddDate(0, 0, 7-weekday)
-}
-
 // Next sunday
 func EndOfSunday(date time.Time) time.Time {
 	return EndOfDay(PreviousSunday(date))
@@ -136,4 +116,72 @@ func AddMonths(date time.Time, amount int) time.Time {
 
 func AddYears(date time.Time, amount int) time.Time {
 	return date.AddDate(amount, 0, 0)
+}
+
+func PreviousWeekDay(date time.Time, targetWeekDay time.Weekday) time.Time {
+	wd := int(date.Weekday())
+	twd := int(targetWeekDay)
+	return date.AddDate(0, 0, -(((wd-twd)%7 + 7) % 7))
+}
+
+func PreviousMonday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Monday)
+}
+
+func PreviousTuesday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Tuesday)
+}
+
+func PreviousWednesday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Wednesday)
+}
+
+func PreviousThursday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Thursday)
+}
+
+func PreviousFriday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Friday)
+}
+
+func PreviousSaturday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Saturday)
+}
+
+func PreviousSunday(date time.Time) time.Time {
+	return PreviousWeekDay(date, time.Sunday)
+}
+
+func NextWeekDay(date time.Time, targetWeekDay time.Weekday) time.Time {
+	wd := int(date.Weekday())
+	twd := int(targetWeekDay)
+	return date.AddDate(0, 0, ((twd-wd)%7+7)%7)
+}
+
+func NextMonday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Monday)
+}
+
+func NextTuesday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Tuesday)
+}
+
+func NextWednesday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Wednesday)
+}
+
+func NextThursday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Thursday)
+}
+
+func NextFriday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Friday)
+}
+
+func NextSaturday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Saturday)
+}
+
+func NextSunday(date time.Time) time.Time {
+	return NextWeekDay(date, time.Sunday)
 }
