@@ -15,7 +15,7 @@ type evalConfig struct {
 	TimeLocation *time.Location
 }
 
-type evaluator struct {
+type Evaluator struct {
 	time.Time
 
 	config *evalConfig
@@ -24,18 +24,18 @@ type evaluator struct {
 	timeSet bool
 }
 
-func newEvaluator() *evaluator {
-	evaluator := &evaluator{
+func New() *Evaluator {
+	Evaluator := &Evaluator{
 		config: &evalConfig{
 			WeekStartDay: time.Sunday,
 		},
 		timeSet: false,
 	}
-	return evaluator
+	return Evaluator
 }
 
 // Override initial node value
-func (e *evaluator) setInitial(date time.Time) {
+func (e *Evaluator) setInitial(date time.Time) {
 	if e.timeSet {
 		return
 	}
@@ -43,7 +43,7 @@ func (e *evaluator) setInitial(date time.Time) {
 	e.timeSet = true
 }
 
-func (e *evaluator) evalValueNode(node *ast.ValueNode) {
+func (e *Evaluator) evalValueNode(node *ast.ValueNode) {
 	switch node.Literal() {
 	case Now:
 	default:
@@ -51,7 +51,7 @@ func (e *evaluator) evalValueNode(node *ast.ValueNode) {
 	}
 }
 
-func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
+func (e *Evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 	amount := int(node.Amount)
 	if token.Minus == node.Sign {
 		amount = -amount
@@ -75,7 +75,7 @@ func (e *evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 	}
 }
 
-func (e *evaluator) evalStartSnap(node *ast.SnapNode) {
+func (e *Evaluator) evalStartSnap(node *ast.SnapNode) {
 	switch node.Unit {
 	// time units
 	case Minute:
@@ -108,7 +108,7 @@ func (e *evaluator) evalStartSnap(node *ast.SnapNode) {
 	}
 }
 
-func (e *evaluator) evalEndSnap(node *ast.SnapNode) {
+func (e *Evaluator) evalEndSnap(node *ast.SnapNode) {
 	switch node.Unit {
 	// time unit
 	case Minute:
@@ -142,7 +142,7 @@ func (e *evaluator) evalEndSnap(node *ast.SnapNode) {
 
 }
 
-func (e *evaluator) evalSnapNode(node *ast.SnapNode) {
+func (e *Evaluator) evalSnapNode(node *ast.SnapNode) {
 	switch node.Token.Type {
 	case token.SnapStart:
 		e.evalStartSnap(node)
@@ -151,7 +151,7 @@ func (e *evaluator) evalSnapNode(node *ast.SnapNode) {
 	}
 }
 
-func (e *evaluator) evalNode(node ast.Node) {
+func (e *Evaluator) evalNode(node ast.Node) {
 	switch nod := node.(type) {
 	case *ast.ValueNode:
 		e.evalValueNode(nod)
@@ -162,7 +162,7 @@ func (e *evaluator) evalNode(node ast.Node) {
 	}
 }
 
-func (e *evaluator) Eval(payload string) (time.Time, error) {
+func (e *Evaluator) Eval(payload string) (time.Time, error) {
 	lexer := lexer.New(payload)
 	parser := parser.New(lexer)
 	astRoot := parser.Parse()
@@ -173,9 +173,4 @@ func (e *evaluator) Eval(payload string) (time.Time, error) {
 		e.evalNode(node)
 	}
 	return e.current, nil
-}
-
-func Eval(payload string) (time.Time, error) {
-	evaluatorImpl := &evaluator{}
-	return evaluatorImpl.Eval(payload)
 }
