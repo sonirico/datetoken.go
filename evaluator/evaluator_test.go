@@ -14,9 +14,22 @@ func formatTime(date time.Time) string {
 func testEval(t *testing.T, payload string, initial string) time.Time {
 	t.Helper()
 
-	eval := newEvaluator()
+	eval := New()
 	eval.setInitial(parseTime(initial))
 	time, err := eval.Eval(payload)
+	if err != nil {
+		t.Fatalf("eval error %s", err.Error())
+	}
+	return time
+}
+
+func testEvalWithWeekday(t *testing.T, payload string, initial string, weekday time.Weekday) time.Time {
+	t.Helper()
+
+	eva := New()
+	eva.SetWeeksStartDay(weekday)
+	eva.setInitial(parseTime(initial))
+	time, err := eva.Eval(payload)
 	if err != nil {
 		t.Fatalf("eval error %s", err.Error())
 	}
@@ -65,11 +78,35 @@ func TestEvaluator_SnapStartDay(t *testing.T) {
 	}
 }
 
-func TestEvaluator_SnapStartWeek(t *testing.T) {
-	time := testEval(t, "now/w", "2020-01-01 10:13:23")
-	if !assertTime(t, time, "2020-01-01 10:00:00") {
+func TestEvaluator_SnapStartWeek_DefaultsSunday(t *testing.T) {
+	time := testEval(t, "now/w", "2020-03-11 00:00:00")
+	if !assertTime(t, time, "2020-03-08 00:00:00") {
 		t.FailNow()
 	}
+}
+
+func TestEvaluator_SnapStartWeek(t *testing.T) {
+	tests := []struct {
+		Payload     string
+		Initial     string
+		WeekStartAt time.Weekday
+		Expected    string
+	}{
+		{"now/w", "2020-03-11 00:00:00", time.Sunday, "2020-03-08 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Monday, "2020-03-09 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Tuesday, "2020-03-10 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Wednesday, "2020-03-11 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Thursday, "2020-03-05 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Friday, "2020-03-06 00:00:00"},
+		{"now/w", "2020-03-11 00:00:00", time.Saturday, "2020-03-07 00:00:00"},
+	}
+	for _, test := range tests {
+		time := testEvalWithWeekday(t, test.Payload, test.Initial, test.WeekStartAt)
+		if !assertTime(t, time, test.Expected) {
+			t.FailNow()
+		}
+	}
+
 }
 
 func TestEvaluator_SnapStartMonth(t *testing.T) {
@@ -116,10 +153,33 @@ func TestEvaluator_SnapEndDay(t *testing.T) {
 	}
 }
 
-func TestEvaluator_SnapEndWeek(t *testing.T) {
-	time := testEval(t, "now@w", "2020-01-01 10:13:23")
-	if !assertTime(t, time, "2020-01-01 10:00:00") {
+func TestEvaluator_SnapEndWeek_DefaultsSunday(t *testing.T) {
+	time := testEval(t, "now@w", "2020-03-11 00:00:00")
+	if !assertTime(t, time, "2020-03-14 23:59:59") {
 		t.FailNow()
+	}
+}
+
+func TestEvaluator_SnapEndWeek(t *testing.T) {
+	tests := []struct {
+		Payload     string
+		Initial     string
+		WeekStartAt time.Weekday
+		Expected    string
+	}{
+		{"now@w", "2020-03-11 00:00:00", time.Sunday, "2020-03-14 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Monday, "2020-03-15 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Tuesday, "2020-03-16 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Wednesday, "2020-03-17 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Thursday, "2020-03-11 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Friday, "2020-03-12 23:59:59"},
+		{"now@w", "2020-03-11 00:00:00", time.Saturday, "2020-03-13 23:59:59"},
+	}
+	for _, test := range tests {
+		time := testEvalWithWeekday(t, test.Payload, test.Initial, test.WeekStartAt)
+		if !assertTime(t, time, test.Expected) {
+			t.FailNow()
+		}
 	}
 }
 

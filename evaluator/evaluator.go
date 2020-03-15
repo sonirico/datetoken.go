@@ -10,28 +10,30 @@ import (
 	"github.com/sonirico/datetoken.go/token"
 )
 
-type evalConfig struct {
-	WeekStartDay time.Weekday
-	TimeLocation *time.Location
-}
-
 type Evaluator struct {
 	time.Time
 
-	config *evalConfig
+	weekStartDay time.Weekday
+	tz           *time.Location
 
 	current time.Time
 	timeSet bool
 }
 
 func New() *Evaluator {
-	Evaluator := &Evaluator{
-		config: &evalConfig{
-			WeekStartDay: time.Sunday,
-		},
-		timeSet: false,
+	return &Evaluator{
+		weekStartDay: time.Sunday,
+		tz:           time.UTC,
+		timeSet:      false,
 	}
-	return Evaluator
+}
+
+func (e *Evaluator) SetTZ(tz *time.Location) {
+	e.tz = tz
+}
+
+func (e *Evaluator) SetWeeksStartDay(wd time.Weekday) {
+	e.weekStartDay = wd
 }
 
 // Override initial node value
@@ -40,12 +42,16 @@ func (e *Evaluator) setInitial(date time.Time) {
 		return
 	}
 	e.current = date
+	if e.tz != nil {
+		e.current = e.current.In(e.tz)
+	}
 	e.timeSet = true
 }
 
 func (e *Evaluator) evalValueNode(node *ast.ValueNode) {
 	switch node.Literal() {
 	case Now:
+		fallthrough
 	default:
 		e.setInitial(time.Now())
 	}

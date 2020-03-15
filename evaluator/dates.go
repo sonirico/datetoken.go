@@ -27,19 +27,7 @@ func BeginningOfDay(date time.Time) time.Time {
 
 // BeginningOfWeek beginning of week
 func BeginningOfWeek(date time.Time, weekStartDay time.Weekday) time.Time {
-	t := BeginningOfDay(date)
-	weekday := int(t.Weekday())
-
-	if weekStartDay != time.Sunday {
-		weekStartDayInt := int(weekStartDay)
-
-		if weekday < weekStartDayInt {
-			weekday = weekday + 7 - weekStartDayInt
-		} else {
-			weekday = weekday - weekStartDayInt
-		}
-	}
-	return t.AddDate(0, 0, -weekday)
+	return PreviousWeekDay(BeginningOfDay(date), weekStartDay)
 }
 
 // BeginningOfMonth beginning of month
@@ -83,11 +71,6 @@ func EndOfMonth(date time.Time) time.Time {
 // EndOfYear end of year
 func EndOfYear(date time.Time) time.Time {
 	return BeginningOfYear(date).AddDate(1, 0, 0).Add(-time.Nanosecond)
-}
-
-// Next sunday
-func EndOfSunday(date time.Time) time.Time {
-	return EndOfDay(PreviousSunday(date))
 }
 
 func AddSeconds(date time.Time, amount int) time.Time {
