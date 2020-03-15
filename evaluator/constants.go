@@ -3,13 +3,14 @@ package evaluator
 import "time"
 
 const (
-	Second string = "s"
-	Minute        = "m"
-	Hour          = "h"
-	Day           = "d"
-	Week          = "w"
-	Month         = "M"
-	Year          = "Y"
+	Second       string = "s"
+	Minute              = "m"
+	Hour                = "h"
+	Day                 = "d"
+	Week                = "w"
+	BusinessWeek        = "bw"
+	Month               = "M"
+	Year                = "Y"
 
 	Monday    = "mon"
 	Tuesday   = "tue"

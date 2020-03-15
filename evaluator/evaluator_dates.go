@@ -24,6 +24,11 @@ func (e *Evaluator) snapStartOfWeek() {
 	e.current = BeginningOfWeek(e.current, e.weekStartDay)
 }
 
+// BeginningOfWeek beginning of week
+func (e *Evaluator) snapStartOfBusinessWeek() {
+	e.snapStartOfWeek()
+}
+
 // BeginningOfMonth beginning of month
 func (e *Evaluator) snapStartOfMonth() {
 	e.current = BeginningOfMonth(e.current)
@@ -52,6 +57,11 @@ func (e *Evaluator) snapEndOfDay() {
 // EndOfWeek end of week
 func (e *Evaluator) snapEndOfWeek() {
 	e.current = EndOfWeek(e.current, e.weekStartDay)
+}
+
+// EndOfWeek end of week
+func (e *Evaluator) snapEndOfBusinessWeek() {
+	e.current = EndOfBusinessWeek(e.current, e.weekStartDay)
 }
 
 // EndOfMonth end of month

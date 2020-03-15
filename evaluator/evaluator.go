@@ -92,6 +92,8 @@ func (e *Evaluator) evalStartSnap(node *ast.SnapNode) {
 		e.snapStartOfDay()
 	case Week:
 		e.snapStartOfWeek()
+	case BusinessWeek:
+		e.snapStartOfBusinessWeek()
 	case Month:
 		e.snapStartOfMonth()
 	case Year:
@@ -125,6 +127,8 @@ func (e *Evaluator) evalEndSnap(node *ast.SnapNode) {
 		e.snapEndOfDay()
 	case Week:
 		e.snapEndOfWeek()
+	case BusinessWeek:
+		e.snapEndOfBusinessWeek()
 	case Month:
 		e.snapEndOfMonth()
 	case Year:

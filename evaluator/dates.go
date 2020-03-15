@@ -63,6 +63,11 @@ func EndOfWeek(date time.Time, weekStartAt time.Weekday) time.Time {
 	return BeginningOfWeek(date, weekStartAt).AddDate(0, 0, 7).Add(-time.Nanosecond)
 }
 
+// EndOfBusinessWeek end of week
+func EndOfBusinessWeek(date time.Time, weekStartAt time.Weekday) time.Time {
+	return BeginningOfWeek(date, weekStartAt).AddDate(0, 0, 5).Add(-time.Nanosecond)
+}
+
 // EndOfMonth end of month
 func EndOfMonth(date time.Time) time.Time {
 	return BeginningOfMonth(date).AddDate(0, 1, 0).Add(-time.Nanosecond)

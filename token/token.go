@@ -25,6 +25,7 @@ var keywords = map[string]TokenType{
 	"h":   Unit,
 	"d":   Unit,
 	"w":   Unit,
+	"bw":  Unit,
 	"M":   Unit,
 	"Y":   Unit,
 	"mon": Wd,
