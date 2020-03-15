@@ -1,7 +1,7 @@
 package evaluator
 
 import (
-	"errors"
+	"github.com/sonirico/datetoken.go/models"
 	"time"
 
 	"github.com/sonirico/datetoken.go/ast"
@@ -173,11 +173,14 @@ func (e *Evaluator) evalNode(node ast.Node) {
 }
 
 func (e *Evaluator) Eval(payload string) (time.Time, error) {
-	lexer := lexer.New(payload)
-	parser := parser.New(lexer)
-	astRoot := parser.Parse()
-	if len(parser.Errors()) > 1 {
-		return time.Now(), errors.New("parser errors")
+	lex := lexer.New(payload)
+	par := parser.New(lex)
+	astRoot := par.Parse()
+	if len(astRoot.Nodes) < 1 {
+		return time.Now(), models.EmptyTokenError
+	}
+	if len(par.Errors()) > 0 {
+		return time.Now(), models.NewInvalidTokenError(payload, par.Errors())
 	}
 	for _, node := range astRoot.Nodes {
 		e.evalNode(node)

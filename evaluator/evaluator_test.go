@@ -512,3 +512,22 @@ func TestEvaluator_NextWeekday(t *testing.T) {
 		}
 	}
 }
+
+func TestEvaluator_InvalidToken(t *testing.T) {
+	tests := []string{
+		"",
+		"now/pepe",
+		"now@paco",
+		"now-abc",
+		"now+xyz",
+		"now-second",
+		"now-w/bw+2h@null",
+	}
+	for _, payload := range tests {
+		eva := New()
+		if _, err := eva.Eval(payload); err == nil {
+			t.Errorf("unexpected valid token. want error, have token '%s'",
+				payload)
+		}
+	}
+}
