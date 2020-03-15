@@ -1,7 +1,5 @@
 package evaluator
 
-import "time"
-
 const (
 	Second       string = "s"
 	Minute              = "m"
@@ -19,19 +17,6 @@ const (
 	Friday    = "fri"
 	Saturday  = "sat"
 	Sunday    = "sun"
-)
 
-const (
-	Start string = "/"
-	End   string = "@"
-)
-
-const (
 	Now = "now"
 )
-
-type valueResolver map[string]func(string) time.Time
-
-func (vr valueResolver) register(token string, fn func(string) time.Time) {
-	vr[token] = fn
-}

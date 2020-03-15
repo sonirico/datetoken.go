@@ -4,72 +4,58 @@ func (e *Evaluator) snapStartOfSecond() {
 	e.current = BeginningOfSecond(e.current)
 }
 
-// BeginningOfMinute beginning of minute
 func (e *Evaluator) snapStartOfMinute() {
 	e.current = BeginningOfMinute(e.current)
 }
 
-// BeginningOfHour beginning of hour
 func (e *Evaluator) snapStartOfHour() {
 	e.current = BeginningOfHour(e.current)
 }
 
-// BeginningOfDay beginning of day
 func (e *Evaluator) snapStartOfDay() {
 	e.current = BeginningOfDay(e.current)
 }
 
-// BeginningOfWeek beginning of week
 func (e *Evaluator) snapStartOfWeek() {
 	e.current = BeginningOfWeek(e.current, e.weekStartDay)
 }
 
-// BeginningOfWeek beginning of week
 func (e *Evaluator) snapStartOfBusinessWeek() {
 	e.snapStartOfWeek()
 }
 
-// BeginningOfMonth beginning of month
 func (e *Evaluator) snapStartOfMonth() {
 	e.current = BeginningOfMonth(e.current)
 }
 
-// BeginningOfYear BeginningOfYear beginning of year
 func (e *Evaluator) snapStartOfYear() {
 	e.current = BeginningOfYear(e.current)
 }
 
-// EndOfMinute end of minute
 func (e *Evaluator) snapEndOfMinute() {
 	e.current = EndOfMinute(e.current)
 }
 
-// EndOfHour end of hour
 func (e *Evaluator) snapEndOfHour() {
 	e.current = EndOfHour(e.current)
 }
 
-// EndOfDay end of day
 func (e *Evaluator) snapEndOfDay() {
 	e.current = EndOfDay(e.current)
 }
 
-// EndOfWeek end of week
 func (e *Evaluator) snapEndOfWeek() {
 	e.current = EndOfWeek(e.current, e.weekStartDay)
 }
 
-// EndOfWeek end of week
 func (e *Evaluator) snapEndOfBusinessWeek() {
 	e.current = EndOfBusinessWeek(e.current, e.weekStartDay)
 }
 
-// EndOfMonth end of month
 func (e *Evaluator) snapEndOfMonth() {
 	e.current = EndOfMonth(e.current)
 }
 
-// EndOfYear end of year
 func (e *Evaluator) snapEndOfYear() {
 	e.current = EndOfYear(e.current)
 }
