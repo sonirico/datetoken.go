@@ -21,7 +21,8 @@ func (rn *RootNode) Type() NodeType {
 	return Root
 }
 
-func (rn *RootNode) addNode(node Node) {
+// AddNode adds a node to the ast tree
+func (rn *RootNode) AddNode(node Node) {
 	rn.Nodes = append(rn.Nodes, node)
 }
 

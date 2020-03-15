@@ -9,6 +9,7 @@ import (
 	"github.com/sonirico/datetoken.go/token"
 )
 
+// Parser will construct the node-tree and the ast for a token
 type Parser struct {
 	lexer *lexer.Lexer
 
@@ -18,6 +19,7 @@ type Parser struct {
 	peekToken token.Token
 }
 
+// New returns a new instance of Parser
 func New(lexer *lexer.Lexer) *Parser {
 	parser := &Parser{
 		lexer:  lexer,
@@ -36,11 +38,11 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.lexer.NextToken()
 }
 
-func (p *Parser) curTokenIs(expectedTokenType token.TokenType) bool {
+func (p *Parser) curTokenIs(expectedTokenType token.Type) bool {
 	return expectedTokenType == p.curToken.Type
 }
 
-func (p *Parser) curError(tokenType token.TokenType) {
+func (p *Parser) curError(tokenType token.Type) {
 	msg := fmt.Sprintf("Expected current token to be of type '%s'. Got '%s' -> %s",
 		tokenType, p.curToken.Type, p.curToken.Literal)
 	p.addError(msg)
@@ -91,10 +93,6 @@ func (p *Parser) parseSnapNode() *ast.SnapNode {
 	return node
 }
 
-func (p *Parser) Errors() []string {
-	return p.errors
-}
-
 func (p *Parser) parseNode() ast.Node {
 	switch p.curToken.Type {
 	case token.Start:
@@ -107,6 +105,7 @@ func (p *Parser) parseNode() ast.Node {
 	return nil
 }
 
+// Parse will iterate the tokens and build the AST
 func (p *Parser) Parse() *ast.RootNode {
 	root := ast.NewRootNode()
 	p.nextToken()
@@ -118,4 +117,9 @@ func (p *Parser) Parse() *ast.RootNode {
 		p.nextToken()
 	}
 	return root
+}
+
+// Errors will returns a list of encountered errors during the parsing stage
+func (p *Parser) Errors() []string {
+	return p.errors
 }

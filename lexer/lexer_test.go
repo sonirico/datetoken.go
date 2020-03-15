@@ -8,7 +8,7 @@ import (
 )
 
 type expectedResult struct {
-	Type    token.TokenType
+	Type    token.Type
 	Literal string
 }
 

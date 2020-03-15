@@ -10,6 +10,7 @@ import (
 	"github.com/sonirico/datetoken.go/token"
 )
 
+// Evaluator takes a token payload to eval. Handles lexing and parsing too.
 type Evaluator struct {
 	time.Time
 
@@ -20,6 +21,7 @@ type Evaluator struct {
 	timeSet bool
 }
 
+// New returns a new instance of Evaluator
 func New() *Evaluator {
 	return &Evaluator{
 		weekStartDay: time.Sunday,
@@ -28,10 +30,12 @@ func New() *Evaluator {
 	}
 }
 
+// SetTZ allows to configure a different time.Location rather than UTC
 func (e *Evaluator) SetTZ(tz *time.Location) {
 	e.tz = tz
 }
 
+// SetWeeksStartDay allows to configure a different time.WeekDay rather than Sunday
 func (e *Evaluator) SetWeeksStartDay(wd time.Weekday) {
 	e.weekStartDay = wd
 }
@@ -50,7 +54,7 @@ func (e *Evaluator) setInitial(date time.Time) {
 
 func (e *Evaluator) evalValueNode(node *ast.ValueNode) {
 	switch node.Literal() {
-	case Now:
+	case now:
 		fallthrough
 	default:
 		e.setInitial(time.Now())
@@ -64,19 +68,19 @@ func (e *Evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 	}
 
 	switch node.Unit {
-	case Second:
+	case second:
 		e.addSeconds(amount)
-	case Minute:
+	case minute:
 		e.addMinutes(amount)
-	case Hour:
+	case hour:
 		e.addHours(amount)
-	case Day:
+	case day:
 		e.addDays(amount)
-	case Week:
+	case week:
 		e.addWeeks(amount)
-	case Month:
+	case month:
 		e.addMonths(amount)
-	case Year:
+	case year:
 		e.addYears(amount)
 	}
 }
@@ -84,34 +88,34 @@ func (e *Evaluator) evalArithmeticNode(node *ast.ArithmeticNode) {
 func (e *Evaluator) evalStartSnap(node *ast.SnapNode) {
 	switch node.Unit {
 	// time units
-	case Minute:
+	case minute:
 		e.snapStartOfMinute()
-	case Hour:
+	case hour:
 		e.snapStartOfHour()
-	case Day:
+	case day:
 		e.snapStartOfDay()
-	case Week:
+	case week:
 		e.snapStartOfWeek()
-	case BusinessWeek:
+	case businessWeek:
 		e.snapStartOfBusinessWeek()
-	case Month:
+	case month:
 		e.snapStartOfMonth()
-	case Year:
+	case year:
 		e.snapStartOfYear()
 	// weekdays
-	case Monday:
+	case monday:
 		e.previousMonday()
-	case Tuesday:
+	case tuesday:
 		e.previousTuesday()
-	case Wednesday:
+	case wednesday:
 		e.previousWednesday()
-	case Thursday:
+	case thursday:
 		e.previousThursday()
-	case Friday:
+	case friday:
 		e.previousFriday()
-	case Saturday:
+	case saturday:
 		e.previousSaturday()
-	case Sunday:
+	case sunday:
 		e.previousSunday()
 	}
 }
@@ -119,34 +123,34 @@ func (e *Evaluator) evalStartSnap(node *ast.SnapNode) {
 func (e *Evaluator) evalEndSnap(node *ast.SnapNode) {
 	switch node.Unit {
 	// time unit
-	case Minute:
+	case minute:
 		e.snapEndOfMinute()
-	case Hour:
+	case hour:
 		e.snapEndOfHour()
-	case Day:
+	case day:
 		e.snapEndOfDay()
-	case Week:
+	case week:
 		e.snapEndOfWeek()
-	case BusinessWeek:
+	case businessWeek:
 		e.snapEndOfBusinessWeek()
-	case Month:
+	case month:
 		e.snapEndOfMonth()
-	case Year:
+	case year:
 		e.snapEndOfYear()
 	// weekdays
-	case Monday:
+	case monday:
 		e.nextMonday()
-	case Tuesday:
+	case tuesday:
 		e.nextTuesday()
-	case Wednesday:
+	case wednesday:
 		e.nextWednesday()
-	case Thursday:
+	case thursday:
 		e.nextThursday()
-	case Friday:
+	case friday:
 		e.nextFriday()
-	case Saturday:
+	case saturday:
 		e.nextSaturday()
-	case Sunday:
+	case sunday:
 		e.nextSunday()
 	}
 
@@ -172,12 +176,14 @@ func (e *Evaluator) evalNode(node ast.Node) {
 	}
 }
 
+// Eval takes a token payload and evaluates it. If correct, it returns the time.Time. Otherwise, the current
+// timestamp is returned along with errors
 func (e *Evaluator) Eval(payload string) (time.Time, error) {
 	lex := lexer.New(payload)
 	par := parser.New(lex)
 	astRoot := par.Parse()
 	if len(astRoot.Nodes) < 1 {
-		return time.Now(), models.EmptyTokenError
+		return time.Now(), models.ErrEmptyToken
 	}
 	if len(par.Errors()) > 0 {
 		return time.Now(), models.NewInvalidTokenError(payload, par.Errors())

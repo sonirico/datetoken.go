@@ -1,12 +1,17 @@
 package ast
 
+// NodeType represents the kind of the ast node category
 type NodeType string
 
 const (
-	Root       NodeType = "root"
-	Value      NodeType = "value"
+	// Root is the root node in the AST
+	Root NodeType = "root"
+	// Value is a value node in the AST, such as "now" or "yesterday"
+	Value NodeType = "value"
+	// Arithmetic is a arithmetic node in the AST, to add or subtract dates
 	Arithmetic NodeType = "arithmetic"
-	Snap       NodeType = "snap"
+	// Snap is a snap node in the AST, to move the clock to start or end of other dates
+	Snap NodeType = "snap"
 )
 
 // Node interface defines the structure of all ast nodes

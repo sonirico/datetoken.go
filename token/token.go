@@ -1,21 +1,32 @@
 package token
 
-type TokenType string
+// Type represent the kind of possible token categories
+type Type string
 
 const (
-	Start     TokenType = "start"
-	End                 = "end"
-	SnapStart           = "/"
-	SnapEnd             = "@"
-	Plus                = "+"
-	Minus               = "-"
-	Number              = "num"
-	Unit                = "unit"
-	Illegal             = "ill"
-	Wd                  = "wd"
+	// Start is the start mark of the tokenization
+	Start Type = "start"
+	// End is the end mark of the tokenization
+	End = "end"
+	// SnapStart is the token mapped to snap dates to start of an unit
+	SnapStart = "/"
+	// SnapEnd is the token mapped to snap dates to end of an unit
+	SnapEnd = "@"
+	// Plus is the token mapped to add time units to a date
+	Plus = "+"
+	// Minus is the token mapped to subtract time units to a date
+	Minus = "-"
+	// Number is the token for any number in a token
+	Number = "num"
+	// Unit is the token for any time unit in a token
+	Unit = "unit"
+	// Wd is the token for any weekday
+	Wd = "wd"
+	// Illegal represents any not supported nor understood value
+	Illegal = "ill"
 )
 
-var keywords = map[string]TokenType{
+var keywords = map[string]Type{
 	"+":   Plus,
 	"-":   Minus,
 	"/":   SnapStart,
@@ -37,18 +48,24 @@ var keywords = map[string]TokenType{
 	"sun": Wd,
 }
 
-func LookupKeyword(key string) TokenType {
+// LookupKeyword will return the associated token type for a given token literal. If no one is found, the literal
+// is considered to be illegal
+func LookupKeyword(key string) Type {
 	if tt, ok := keywords[key]; ok {
 		return tt
 	}
 	return Illegal
 }
 
+// Token represents the minimal piece of information relevant to datetoken
 type Token struct {
-	Type    TokenType
+	// Type indicates the token type
+	Type Type
+	// Literal stores the literal string from the input source
 	Literal string
 }
 
-func NewToken(tt TokenType, literal string) Token {
+// NewToken returns a new instance of Token
+func NewToken(tt Type, literal string) Token {
 	return Token{Type: tt, Literal: literal}
 }

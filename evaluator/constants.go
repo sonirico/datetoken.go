@@ -1,22 +1,22 @@
 package evaluator
 
 const (
-	Second       string = "s"
-	Minute              = "m"
-	Hour                = "h"
-	Day                 = "d"
-	Week                = "w"
-	BusinessWeek        = "bw"
-	Month               = "M"
-	Year                = "Y"
+	second       string = "s"
+	minute              = "m"
+	hour                = "h"
+	day                 = "d"
+	week                = "w"
+	businessWeek        = "bw"
+	month               = "M"
+	year                = "Y"
 
-	Monday    = "mon"
-	Tuesday   = "tue"
-	Wednesday = "wed"
-	Thursday  = "thu"
-	Friday    = "fri"
-	Saturday  = "sat"
-	Sunday    = "sun"
+	monday    = "mon"
+	tuesday   = "tue"
+	wednesday = "wed"
+	thursday  = "thu"
+	friday    = "fri"
+	saturday  = "sat"
+	sunday    = "sun"
 
-	Now = "now"
+	now = "now"
 )

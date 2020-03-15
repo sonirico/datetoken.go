@@ -6,12 +6,14 @@ import (
 	"time"
 )
 
+// Token encapsulates the input and output of a token evaluation
 type Token struct {
-	literal string    `json:"literal"`
-	date    time.Time `json:"datetime"`
-	errors  []error   `json:"errors"`
+	literal string
+	date    time.Time
+	errors  []error
 }
 
+// NewToken returns a new instance of Token
 func NewToken(payload string, date time.Time) Token {
 	return Token{
 		literal: payload,
@@ -20,10 +22,17 @@ func NewToken(payload string, date time.Time) Token {
 	}
 }
 
+// AddError adds errors to the error list of the token
 func (t Token) AddError(err error) {
 	t.errors = append(t.errors, err)
 }
 
+// Literal returns the token as given by the client
+func (t Token) Literal() string {
+	return t.literal
+}
+
+// String returns debug information of the token
 func (t Token) String() string {
 	var buf bytes.Buffer
 	buf.WriteString(fmt.Sprintf("payload: '%s'", t.literal))
@@ -34,10 +43,12 @@ func (t Token) String() string {
 	return buf.String()
 }
 
+// Errors will return the list of errors encountered during the evaluation
 func (t Token) Errors() []error {
 	return t.errors
 }
 
+// ErrorString will return a formatted string version of the errors
 func (t Token) ErrorString() string {
 	var buf bytes.Buffer
 	buf.WriteString("errors: ")

@@ -6,6 +6,7 @@ import (
 	"github.com/sonirico/datetoken.go/token"
 )
 
+// Lexer handles payload tokenization
 type Lexer struct {
 	payload        string
 	limit          int64
@@ -14,6 +15,7 @@ type Lexer struct {
 	nextPointer    int64
 }
 
+// New returns a new Lexer instance
 func New(payload string) *Lexer {
 	cleanPayload := strings.TrimSpace(payload)
 	lexer := &Lexer{
@@ -59,6 +61,7 @@ func (l *Lexer) readNumber() string {
 	return l.payload[pos:l.currentPointer]
 }
 
+// NextToken returns the next token of the payload
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 	switch l.currentChar {
@@ -105,6 +108,6 @@ func isDigit(char byte) bool {
 	return char >= '0' && char <= '9'
 }
 
-func newToken(tt token.TokenType, literal string) token.Token {
+func newToken(tt token.Type, literal string) token.Token {
 	return token.NewToken(tt, literal)
 }

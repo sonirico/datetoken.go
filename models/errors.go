@@ -6,18 +6,22 @@ import (
 	"fmt"
 )
 
-var EmptyTokenError = errors.New("empty tokens default to 'just now' value. You can still read value to my left")
+// ErrEmptyToken is yielded when the parser returns no nodes
+var ErrEmptyToken = errors.New("empty tokens default to 'just now' value. You can still read value to my left")
 
-type InvalidTokenError struct {
+// ErrInvalidToken is yielded when the parser encounters illegal tokens on the payload
+type ErrInvalidToken struct {
 	Literal string
 	Errors  []string
 }
 
-func NewInvalidTokenError(literal string, errors []string) InvalidTokenError {
-	return InvalidTokenError{Literal: literal, Errors: errors}
+// NewInvalidTokenError returns a new instance of ErrInvalidToken
+func NewInvalidTokenError(literal string, errors []string) ErrInvalidToken {
+	return ErrInvalidToken{Literal: literal, Errors: errors}
 }
 
-func (ite InvalidTokenError) Error() string {
+// Error returns the string representation of the error
+func (ite ErrInvalidToken) Error() string {
 	var buf bytes.Buffer
 	buf.WriteString(fmt.Sprintf("invalid token '%s'", ite.Literal))
 	if len(ite.Errors) > 0 {
