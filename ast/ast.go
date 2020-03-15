@@ -1,11 +1,5 @@
 package ast
 
-import (
-	"fmt"
-
-	"github.com/sonirico/datetoken.go/token"
-)
-
 type NodeType string
 
 const (
@@ -15,64 +9,12 @@ const (
 	Snap       NodeType = "snap"
 )
 
+// Node interface defines the structure of all ast nodes
 type Node interface {
+	// Type returns the ast node type
 	Type() NodeType
+	// Literal returns the ast node main token value
 	Literal() string
+	// Inspect returns the ast node string presentation
 	Inspect() string
-}
-
-type ValueNode struct {
-	Token token.Token
-}
-
-func (vn ValueNode) Type() NodeType {
-	return Value
-}
-
-func (vn ValueNode) Literal() string {
-	return vn.Token.Literal
-}
-
-func (vn ValueNode) Inspect() string {
-	return vn.Literal()
-}
-
-type ArithmeticNode struct {
-	Token token.Token
-
-	Amount int64
-	Sign   string
-	Unit   string
-}
-
-func (an *ArithmeticNode) Type() NodeType {
-	return Arithmetic
-}
-
-func (an *ArithmeticNode) Literal() string {
-	return an.Token.Literal
-}
-
-func (an *ArithmeticNode) Inspect() string {
-	return fmt.Sprintf("%s%d%s", an.Sign, an.Amount, an.Unit)
-}
-
-type SnapNode struct {
-	Token token.Token
-
-	Operator string
-
-	Unit string
-}
-
-func (sn SnapNode) Type() NodeType {
-	return Snap
-}
-
-func (sn SnapNode) Literal() string {
-	return sn.Token.Literal
-}
-
-func (sn SnapNode) Inspect() string {
-	return fmt.Sprintf("%s%s", sn.Operator, sn.Unit)
 }
