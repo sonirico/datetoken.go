@@ -30,6 +30,8 @@ Some common examples of relative tokens:
 | Next week                      | `now+w/w`      | `now+w@w`     |
 | Custom range                   | `now+w-2d/h`   | `now+2M-10h`  |
 | Last month first business week | `now-M/M+w/bw` | `now-M/+w@bw` |
+| This year                      | `now/Y`        | `now@Y`       |
+
 
 As you may have noticed, token follow a pattern:
 
@@ -47,6 +49,7 @@ As you may have noticed, token follow a pattern:
   - `d` days
   - `w` weeks
   - `M` months
+  - `Y` years
 - Optionally, there exist two extra modifiers to snap dates to the start or the
   end of any given snapshot unit. Those are:
   - `/` Snap the date to the start of the snapshot unit.
@@ -99,5 +102,10 @@ func main() {
 }
 ```
 
-For more examples you can refer to https://github.com/sonirico/datetoken.go/tree/master/examples    
+For more examples you can refer to https://github.com/sonirico/datetoken.go/tree/master/examples
+
+## Other versions
+
+  - **python**: https://github.com/sonirico/datetoken.py
+  - **typescript**: https://github.com/sonirico/datetoken.js
 
