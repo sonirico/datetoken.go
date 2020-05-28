@@ -1,3 +1,9 @@
+[![Build][github-actions-image]][github-actions-url]
+[![ReportCard][go-report-card-image]][go-report-card-url]
+[![Docs][godoc-image]][godoc-url]
+[![Contributions][contributions-image]][contributions-url] 
+[![Deps: none][deps-image]][deps-url]
+
 # datetoken
 
 ## Featuring
@@ -109,3 +115,14 @@ For more examples you can refer to https://github.com/sonirico/datetoken.go/tree
   - **python**: https://github.com/sonirico/datetoken.py
   - **typescript**: https://github.com/sonirico/datetoken.js
 
+
+[github-actions-url]: https://github.com/sonirico/datetoken.go/actions
+[github-actions-image]: https://github.com/sonirico/datetoken.go/workflows/Go/badge.svg
+[go-report-card-url]: https://goreportcard.com/badge/github.com/sonirico/datetoken.go
+[go-report-card-image]: https://goreportcard.com/badge/github.com/sonirico/datetoken.go
+[godoc-url]: https://godoc.org/github.com/sonirico/datetoken.go
+[godoc-image]: https://godoc.org/github.com/sonirico/datetoken.go?status.svg
+[contributions-url]: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
+[contributions-image]: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
+[deps-url]: https://github.com/sonirico/datetoken.go/blob/master/go.mod
+[deps-image]: https://img.shields.io/badge/dependencies-none-brightgreen.svg
