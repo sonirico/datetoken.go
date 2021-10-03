@@ -46,6 +46,11 @@ var keywords = map[string]Type{
 	"fri": Wd,
 	"sat": Wd,
 	"sun": Wd,
+	"Q":   Unit,
+	"Q1":  Unit,
+	"Q2":  Unit,
+	"Q3":  Unit,
+	"Q4":  Unit,
 }
 
 // LookupKeyword will return the associated token type for a given token literal. If no one is found, the literal

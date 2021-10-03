@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/sonirico/datetoken.go"
 )
 
@@ -15,6 +16,7 @@ func main() {
 		"now/bw",
 		"now/M",
 		"now/Y",
+		"now/Q",
 	}
 	fmt.Println("Snap to start of units")
 	for _, token := range tokens {
@@ -32,6 +34,7 @@ func main() {
 		"now@bw",
 		"now@M",
 		"now@Y",
+		"now@Q",
 	}
 	for _, token := range tokens {
 		date, _ := datetoken.EvalNaive(token)

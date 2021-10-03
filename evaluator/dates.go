@@ -46,6 +46,22 @@ func BeginningOfYear(date time.Time) time.Time {
 	return time.Date(y, time.January, 1, 0, 0, 0, 0, date.Location())
 }
 
+// BeginningOfCurrentQuarter returns the given date to the start of then current quarter
+func BeginningOfCurrentQuarter(date time.Time) time.Time {
+	_, m, _ := date.Date()
+	q := int((m - 1) / 3)
+
+	return BeginningOfQuarter(date, q)
+}
+
+// BeginningOfQuarter returns the given date to the start of the given quarter
+func BeginningOfQuarter(date time.Time, q int) time.Time {
+	y, _, _ := date.Date()
+	m := time.Month(q*3 + 1)
+
+	return time.Date(y, m, 1, 0, 0, 0, 0, date.Location())
+}
+
 // EndOfMinute returns the given day to the end of the minute, with seconds truncated to 59
 func EndOfMinute(date time.Time) time.Time {
 	return BeginningOfMinute(date).Add(time.Minute - time.Nanosecond)
@@ -80,6 +96,26 @@ func EndOfBusinessWeek(date time.Time, weekStartAt time.Weekday) time.Time {
 // seconds will be truncated to 59
 func EndOfMonth(date time.Time) time.Time {
 	return BeginningOfMonth(date).AddDate(0, 1, 0).Add(-time.Nanosecond)
+}
+
+// EndOfCurrentQuarter returns the given date to the end of then current quarter
+func EndOfCurrentQuarter(date time.Time) time.Time {
+	_, m, _ := date.Date()
+	q := int((m - 1) / 3)
+
+	return EndOfQuarter(date, q)
+}
+
+// EndOfQuarter returns the given date to the end of the given quarter
+func EndOfQuarter(date time.Time, q int) time.Time {
+	y, _, _ := date.Date()
+	m := time.Month(q*3 + 3)
+	d := 30
+	if m == 12 || m == 3 {
+		d = 31
+	}
+
+	return time.Date(y, m, d, 23, 59, 59, int(time.Second-time.Nanosecond), date.Location())
 }
 
 // EndOfYear returns the given date snapped to the end of the year, being the day 31th of December. Hours are
