@@ -47,7 +47,7 @@ func (l *Lexer) peekChar() byte {
 
 func (l *Lexer) readWord() string {
 	pos := l.currentPointer
-	for isLetter(l.currentChar) {
+	for isLetter(l.currentChar) || isDigit(l.currentChar) {
 		l.readChar()
 	}
 	return l.payload[pos:l.currentPointer]

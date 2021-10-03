@@ -12,6 +12,7 @@
 - **Time zone support**. Time zones tend to be a major pending subject to many devs.
 - **Configure when week start**. Cause not every country cries on Mondays.
 - **Business weeks**. The previous point allows this.
+- **Quarters**
 
 ## Motivation
 
@@ -37,6 +38,11 @@ Some common examples of relative tokens:
 | Custom range                   | `now+w-2d/h`   | `now+2M-10h`  |
 | Last month first business week | `now-M/M+w/bw` | `now-M/+w@bw` |
 | This year                      | `now/Y`        | `now@Y`       |
+| This quarter                   | `now/Q`        | `now@Q`       |
+| This first quarter  (Q1)       | `now/Q1`       | `now@Q1`      |
+| This second quarter (Q2)       | `now/Q2`       | `now@Q2`      |
+| This third quarter  (Q3)       | `now/Q3`       | `now@Q3`      |
+| This fourth quarter (Q4)       | `now/Q4`       | `now@Q4`      |
 
 
 As you may have noticed, token follow a pattern:
@@ -56,6 +62,7 @@ As you may have noticed, token follow a pattern:
   - `w` weeks
   - `M` months
   - `Y` years
+  - `Q` quarters
 - Optionally, there exist two extra modifiers to snap dates to the start or the
   end of any given snapshot unit. Those are:
   - `/` Snap the date to the start of the snapshot unit.

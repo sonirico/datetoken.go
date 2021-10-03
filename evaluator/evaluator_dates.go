@@ -32,6 +32,22 @@ func (e *Evaluator) snapStartOfYear() {
 	e.current = BeginningOfYear(e.current)
 }
 
+func (e *Evaluator) snapStartOfCurrentQuarter() {
+	e.current = BeginningOfCurrentQuarter(e.current)
+}
+
+func (e *Evaluator) snapStartOfQuarter(q int) {
+	e.current = BeginningOfQuarter(e.current, q)
+}
+
+func (e *Evaluator) snapEndOfCurrentQuarter() {
+	e.current = EndOfCurrentQuarter(e.current)
+}
+
+func (e *Evaluator) snapEndOfQuarter(q int) {
+	e.current = EndOfQuarter(e.current, q)
+}
+
 func (e *Evaluator) snapEndOfMinute() {
 	e.current = EndOfMinute(e.current)
 }

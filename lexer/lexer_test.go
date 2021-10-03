@@ -31,7 +31,7 @@ func testToken(t *testing.T, payload string, expected []expectedResult) {
 }
 func TestLexer_WithNow(t *testing.T) {
 	input := `
-		now-s+2m_-3h+234d-w+M-Y/M@w@bw
+		now-s+2m_-3h+234d-w+M-Y/M@w@bw/Q/Q1/Q2/Q3/Q4
 	`
 	expected := []expectedResult{
 		{token.Start, "now"},
@@ -59,6 +59,16 @@ func TestLexer_WithNow(t *testing.T) {
 		{token.Unit, "w"},
 		{token.SnapEnd, "@"},
 		{token.Unit, "bw"},
+		{token.SnapStart, "/"},
+		{token.Unit, "Q"},
+		{token.SnapStart, "/"},
+		{token.Unit, "Q1"},
+		{token.SnapStart, "/"},
+		{token.Unit, "Q2"},
+		{token.SnapStart, "/"},
+		{token.Unit, "Q3"},
+		{token.SnapStart, "/"},
+		{token.Unit, "Q4"},
 		{token.End, ""},
 	}
 

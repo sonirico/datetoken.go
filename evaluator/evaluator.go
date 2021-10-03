@@ -1,8 +1,9 @@
 package evaluator
 
 import (
-	"github.com/sonirico/datetoken.go/models"
 	"time"
+
+	"github.com/sonirico/datetoken.go/models"
 
 	"github.com/sonirico/datetoken.go/ast"
 	"github.com/sonirico/datetoken.go/lexer"
@@ -102,6 +103,16 @@ func (e *Evaluator) evalStartSnap(node *ast.SnapNode) {
 		e.snapStartOfMonth()
 	case year:
 		e.snapStartOfYear()
+	case quarter:
+		e.snapStartOfCurrentQuarter()
+	case quarter1:
+		e.snapStartOfQuarter(0)
+	case quarter2:
+		e.snapStartOfQuarter(1)
+	case quarter3:
+		e.snapStartOfQuarter(2)
+	case quarter4:
+		e.snapStartOfQuarter(3)
 	// weekdays
 	case monday:
 		e.previousMonday()
@@ -137,6 +148,16 @@ func (e *Evaluator) evalEndSnap(node *ast.SnapNode) {
 		e.snapEndOfMonth()
 	case year:
 		e.snapEndOfYear()
+	case quarter:
+		e.snapEndOfCurrentQuarter()
+	case quarter1:
+		e.snapEndOfQuarter(0)
+	case quarter2:
+		e.snapEndOfQuarter(1)
+	case quarter3:
+		e.snapEndOfQuarter(2)
+	case quarter4:
+		e.snapEndOfQuarter(3)
 	// weekdays
 	case monday:
 		e.nextMonday()

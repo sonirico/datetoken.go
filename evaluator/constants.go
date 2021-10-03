@@ -9,6 +9,11 @@ const (
 	businessWeek        = "bw"
 	month               = "M"
 	year                = "Y"
+	quarter             = "Q"
+	quarter1            = "Q1"
+	quarter2            = "Q2"
+	quarter3            = "Q3"
+	quarter4            = "Q4"
 
 	monday    = "mon"
 	tuesday   = "tue"
